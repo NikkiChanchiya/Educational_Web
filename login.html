@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Signup Form</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #e78989, #2575fc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 320px;
+            transition: transform 0.3s ease;
+        }
+        .container:hover {
+            transform: scale(1.05);
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            border-color: #2575fc;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #6a11cb;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2575fc;
+        }
+        .toggle {
+            text-align: center;
+            margin-top: 15px;
+        }
+        .toggle a {
+            color: #6a11cb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .toggle a:hover {
+            text-decoration: underline;
+        }
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Form -->
+    <form id="loginForm" onsubmit="return validateLogin()">
+        <div class="container">
+            <h2>Login</h2>
+            <input type="text" id="loginUsername" placeholder="Username" required>
+            <span class="error" id="loginUsernameError"></span>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+            <span class="error" id="loginPasswordError"></span>
+            <button type="submit">Login</button>
+            <div class="toggle">Don't have an account? <a href="#" onclick="toggleForms()">Signup</a></div>
+            <div class="toggle"><a href="index.html">Skip for now</a></div>
+        </div>
+    </form>
+
+    <!-- Signup Form -->
+    <form id="signupForm" onsubmit="return validateSignup()" style="display:none;">
+        <div class="container">
+            <h2>Signup</h2>
+            <input type="text" id="username" placeholder="Username" required>
+            <span class="error" id="usernameError"></span>
+            <input type="tel" id="number" placeholder="Mobile Number" required>
+            <span class="error" id="numberError"></span>
+            <input type="email" id="email" placeholder="Email" required>
+            <span class="error" id="emailError"></span>
+            <input type="password" id="pass" placeholder="Password" required>
+            <span class="error" id="passError"></span>
+            <input type="password" id="cpass" placeholder="Confirm Password" required>
+            <span class="error" id="cpassError"></span>
+            <button type="submit">Signup</button>
+            <div class="toggle">Already have an account? <a href="#" onclick="toggleForms()">Login</a></div>
+            <div class="toggle"><a href="index.html">Skip for now</a></div>
+        </div>
+    </form>
+
+    <script>
+        // Toggle between login and signup forms
+        function toggleForms() {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            if (loginForm.style.display === 'none') {
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+            } else {
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+            }
+        }
+
+        // Validate login form
+        function validateLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+            let valid = true;
+
+            // Clear previous errors
+            document.getElementById('loginUsernameError').textContent = '';
+            document.getElementById('loginPasswordError').textContent = '';
+
+            // Validate username (only letters)
+            const usernamePattern = /^[a-zA-Z]+$/;
+            if (!usernamePattern.test(username)) {
+                document.getElementById('loginUsernameError').textContent = "Username must contain only letters.";
+                valid = false;
+            }
+
+            // Validate password (non-empty)
+            if (password === '') {
+                document.getElementById('loginPasswordError').textContent = "Please enter your password.";
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        // Validate signup form
+        function validateSignup() {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const number = document.getElementById('number').value.trim();
+            const pass = document.getElementById('pass').value.trim();
+            const cpass = document.getElementById('cpass').value.trim();
+            let valid = true;
+
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const phonePattern = /^[0-9]{10}$/;
+            const usernamePattern = /^[a-zA-Z]+$/;
+
+            // Clear previous errors
+            document.getElementById('usernameError').textContent = '';
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('numberError').textContent = '';
+            document.getElementById('passError').textContent = '';
+            document.getElementById('cpassError').textContent = '';
+
+            // Validate username (only letters)
+            if (!usernamePattern.test(username)) {
+                document.getElementById('usernameError').textContent = "Username must contain only letters.";
+                valid = false;
+            }
+
+            // Validate phone number
+            if (!phonePattern.test(number)) {
+                document.getElementById('numberError').textContent = "Please enter a valid 10-digit phone number.";
+                valid = false;
+            }
+
+            // Validate email
+            if (!emailPattern.test(email)) {
+                document.getElementById('emailError').textContent = "Please enter a valid email address.";
+                valid = false;
+            }
+
+            // Validate password length
+            if (pass.length < 6) {
+                document.getElementById('passError').textContent = "Password must be at least 6 characters long.";
+                valid = false;
+            }
+
+            // Validate password match
+            if (pass !== cpass) {
+                document.getElementById('cpassError').textContent = "Passwords do not match.";
+                valid = false;
+            }
+
+            return valid;
+        }
+    </script>
+</body>
+</html>
